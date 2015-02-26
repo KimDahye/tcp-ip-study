@@ -78,7 +78,7 @@ void* request_handler(void* arg)
 		fclose(clnt_read);
 		fclose(clnt_write);
 		//close(clnt_sock)은 필요 없나? 78, 79행이 완료되면, 이 쓰레드에서는 close()필요 없나?
-		return;
+		return (void*)1;
 	}
 	
 	strcpy(method, strtok(req_line, " /"));
@@ -89,10 +89,12 @@ void* request_handler(void* arg)
 		send_error(clnt_write);
 		fclose(clnt_read);
 		fclose(clnt_write);
-		return;
+		return (void*)1;
 	}
 	fclose(clnt_read);
 	send_data(clnt_write, ct, file_name);
+
+	return (void*)1;
 }
 
 void send_data(FILE* fp, char* ct, char* file_name)
